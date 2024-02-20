@@ -1,5 +1,5 @@
 # Online Gradebook
-
+Project docs are hosted at https://ponurakk.github.io/e-gradebook
 ## How to Run
 Based on your system execute use equivalent manager:
 
