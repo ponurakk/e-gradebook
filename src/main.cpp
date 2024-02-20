@@ -5,6 +5,8 @@ using crow::LogLevel;
 using std::string;
 
 int main() {
+  CustomLogger logger;
+  logger::setHandler(&logger);
   crow::SimpleApp app;
   app.loglevel(LogLevel::INFO);
 
