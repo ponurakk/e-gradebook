@@ -1,4 +1,4 @@
-#include "../include/logger.h"
+#include "logger.h"
 #include <crow/logging.h>
 #include <ctime>
 #include <iomanip>

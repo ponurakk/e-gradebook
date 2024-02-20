@@ -8,6 +8,7 @@ find_package(SQLite3 REQUIRED)
 # Add files to package
 set(SOURCE_FILES
   src/main.cpp
+  src/logger.cpp
 )
 
 # Add executable

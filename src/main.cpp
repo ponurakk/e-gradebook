@@ -1,3 +1,4 @@
+#include "logger.h"
 #include <crow/app.h>
 #include <crow/logging.h>
 
@@ -6,7 +7,7 @@ using std::string;
 
 int main() {
   CustomLogger logger;
-  logger::setHandler(&logger);
+  crow::logger::setHandler(&logger);
   crow::SimpleApp app;
   app.loglevel(LogLevel::INFO);
 
