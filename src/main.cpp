@@ -23,7 +23,7 @@ int main() {
   CROW_ROUTE(app, "/docs/<path>")
       .methods(crow::HTTPMethod::GET)(
           [](const crow::request &req, crow::response &res, std::string path) {
-            std::string full_path = CROW_STATIC_DIRECTORY "docs/" + path;
+            std::string full_path = "docs/" + path;
             res.set_static_file_info(full_path);
             res.end();
           });
