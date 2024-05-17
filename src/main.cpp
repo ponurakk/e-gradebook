@@ -30,7 +30,7 @@ int main() {
 
   CROW_ROUTE(app, "/")
   ([]() {
-    auto page = crow::mustache::load("index.html");
+    auto page = crow::mustache::load("index.mustache");
     return page.render();
   });
 
