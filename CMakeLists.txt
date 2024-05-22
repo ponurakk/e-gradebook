@@ -9,13 +9,11 @@ find_package(SQLite3 REQUIRED)
 set(SOURCE_FILES
   src/main.cpp
   src/logger.cpp
+  src/initialize_db.cpp
 )
 
 # Add executable
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
-
-# Include header files directory
-target_include_directories(${PROJECT_NAME} PRIVATE include)
 
 # Link against the libraries
 target_link_libraries(${PROJECT_NAME} PUBLIC Crow::Crow SQLite::SQLite3)

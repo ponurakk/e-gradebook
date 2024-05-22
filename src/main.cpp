@@ -1,3 +1,5 @@
+#include "config.h"
+#include "initialize_db.h"
 #include "logger.h"
 #include <crow/app.h>
 #include <crow/common.h>
@@ -12,6 +14,10 @@ int main() {
   crow::logger::setHandler(&logger);
   crow::SimpleApp app;
   app.loglevel(LogLevel::INFO);
+
+  Config config = {"127.0.0.1", 3000, "sqlite.db"};
+
+  DbInit db(config);
 
   // Default route to serve index.html from /static/docs
   CROW_ROUTE(app, "/docs/")
