@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['customlogger_0',['CustomLogger',['../classCustomLogger.html',1,'']]]
+  ['config_0',['Config',['../structConfig.html',1,'']]],
+  ['customlogger_1',['CustomLogger',['../classCustomLogger.html',1,'']]]
 ];

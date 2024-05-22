@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['log_0',['log',['../classCustomLogger.html#a291e3ae0551bfcd3742f5e02dc1eaff8',1,'CustomLogger']]],
-  ['logger_2eh_1',['logger.h',['../logger_8h.html',1,'']]],
-  ['logleveltocolor_2',['logLevelToColor',['../logger_8h.html#affb6dd4b577ff424d349804d5b764f62',1,'logger.cpp']]],
-  ['logleveltostring_3',['logLevelToString',['../logger_8h.html#aa2e2bb2d55e0eb4f60200f286be0c5c8',1,'logger.cpp']]]
+  ['database_0',['database',['../structConfig.html#a1b88268ea6a19312773216da3b49f1ba',1,'Config']]],
+  ['db_1',['db',['../classDbInit.html#a991fafc2c4ebdfea27eb2500312937ee',1,'DbInit']]],
+  ['dbinit_2',['DbInit',['../classDbInit.html',1,'DbInit'],['../classDbInit.html#a469b1d203a4b0a583fde1e5f9400d400',1,'DbInit::DbInit()']]]
 ];

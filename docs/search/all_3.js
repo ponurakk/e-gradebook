@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['resetcolor_0',['resetColor',['../logger_8h.html#afe00396766eb6b8ca4674de4c5d3d949',1,'logger.cpp']]]
+  ['getcurrenttime_0',['getCurrentTime',['../logger_8h.html#a7faa46a2c2c8ede222a5507f4ff2d153',1,'logger.cpp']]]
 ];
