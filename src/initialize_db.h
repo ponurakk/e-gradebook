@@ -1,3 +1,7 @@
+/** @file
+ * @brief Defines functions for database intialization
+ */
+
 #ifndef INITIALIZE_DB_H_
 #define INITIALIZE_DB_H_
 
