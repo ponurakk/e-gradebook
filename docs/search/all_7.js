@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['port_0',['port',['../structConfig.html#a9b99e069f6e78fcb906d5effbb600e97',1,'Config']]]
+  ['operator_20crow_3a_3ajson_3a_3awvalue_0',['wvalue',['../structConfig.html#ae4d932561780c9f2d6482c0237c880a3',1,'Config']]]
 ];

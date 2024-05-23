@@ -1,0 +1,27 @@
+var classRouter =
+[
+    [ "Router", "classRouter.html#a6bc104ba5cc79a98bacc22f79ff28ee7", null ],
+    [ "~Router", "classRouter.html#a26d13a6259937e330488653e8e16f921", null ],
+    [ "handleCreateClass", "classRouter.html#a88e0b7d00ab79c85385bca5a8b240cd8", null ],
+    [ "handleCreateGrade", "classRouter.html#ac83c234af678a51d3423f7ad5b80c615", null ],
+    [ "handleCreateStudent", "classRouter.html#abfb78b2bdb9e58298e1dd5e5bfb3a09c", null ],
+    [ "handleCreateTeacher", "classRouter.html#a472fc2fd419586013901473b4082cc71", null ],
+    [ "handleDeleteClass", "classRouter.html#a79f77abae41179fe3f758249a2bb06a0", null ],
+    [ "handleDeleteGrade", "classRouter.html#afc947a4abd5794c4fa9efc6cec7a8412", null ],
+    [ "handleDeleteStudent", "classRouter.html#a3ce2a0272fceba2540a2d08c4c0150c0", null ],
+    [ "handleDeleteTeacher", "classRouter.html#a0a51b0fb740ab81800997e328d4d36d4", null ],
+    [ "handleGetClass", "classRouter.html#abfa5fe2615c4dd037b45b5c74fed3795", null ],
+    [ "handleGetClasses", "classRouter.html#a0e66812602d8e69b9ee63c812b213820", null ],
+    [ "handleGetGrade", "classRouter.html#a4f4b3955ccb900f4b5ee25f81dd2421d", null ],
+    [ "handleGetGrades", "classRouter.html#a296e83c88e7bbf02efe15a5c2117a9e8", null ],
+    [ "handleGetStudent", "classRouter.html#ae1b915c4c558d21204700899a2d648e2", null ],
+    [ "handleGetStudents", "classRouter.html#a42b7b34030cd916f21f8ec0dcbac1204", null ],
+    [ "handleGetTeacher", "classRouter.html#a6307fcea3cc23e193d34ccbd88aa772c", null ],
+    [ "handleGetTeachers", "classRouter.html#a2a72604387827c05d1b20bc57d2b1e00", null ],
+    [ "handleUpdateClass", "classRouter.html#a22c450eb385e5621ab158407c6287c05", null ],
+    [ "handleUpdateGrade", "classRouter.html#a1531133efe3d05f7ea8deb7758e0925b", null ],
+    [ "handleUpdateStudent", "classRouter.html#a86f3bd4f23fb472bc60eace21cea41e7", null ],
+    [ "handleUpdateTeacher", "classRouter.html#a6f52760e2d9323af60c0175ebef43f6e", null ],
+    [ "app", "classRouter.html#a48aa92e3f9008249d544cecfd2e526f5", null ],
+    [ "db", "classRouter.html#a4df3c67a2570c812798db8ce4ed5b2a7", null ]
+];

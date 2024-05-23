@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['setcolor_0',['setColor',['../logger_8h.html#a75b9cb32ff80bf061791beb01a8433d0',1,'logger.cpp']]],
-  ['sqliteresult_1',['sqliteResult',['../initialize__db_8h.html#a341e0f567b605434be460c9223e92c80',1,'initialize_db.cpp']]]
+  ['resetcolor_0',['resetColor',['../logger_8h.html#afe00396766eb6b8ca4674de4c5d3d949',1,'logger.cpp']]],
+  ['router_1',['Router',['../classRouter.html',1,'Router'],['../classRouter.html#a6bc104ba5cc79a98bacc22f79ff28ee7',1,'Router::Router()']]]
 ];

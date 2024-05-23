@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['resetcolor_0',['resetColor',['../logger_8h.html#afe00396766eb6b8ca4674de4c5d3d949',1,'logger.cpp']]]
+  ['port_0',['port',['../structConfig.html#a9b99e069f6e78fcb906d5effbb600e97',1,'Config']]]
 ];

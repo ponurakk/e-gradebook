@@ -1,4 +1,23 @@
 var searchData=
 [
-  ['initialize_5fdb_2eh_0',['initialize_db.h',['../initialize__db_8h.html',1,'']]]
+  ['handlecreateclass_0',['handleCreateClass',['../classRouter.html#a88e0b7d00ab79c85385bca5a8b240cd8',1,'Router']]],
+  ['handlecreategrade_1',['handleCreateGrade',['../classRouter.html#ac83c234af678a51d3423f7ad5b80c615',1,'Router']]],
+  ['handlecreatestudent_2',['handleCreateStudent',['../classRouter.html#abfb78b2bdb9e58298e1dd5e5bfb3a09c',1,'Router']]],
+  ['handlecreateteacher_3',['handleCreateTeacher',['../classRouter.html#a472fc2fd419586013901473b4082cc71',1,'Router']]],
+  ['handledeleteclass_4',['handleDeleteClass',['../classRouter.html#a79f77abae41179fe3f758249a2bb06a0',1,'Router']]],
+  ['handledeletegrade_5',['handleDeleteGrade',['../classRouter.html#afc947a4abd5794c4fa9efc6cec7a8412',1,'Router']]],
+  ['handledeletestudent_6',['handleDeleteStudent',['../classRouter.html#a3ce2a0272fceba2540a2d08c4c0150c0',1,'Router']]],
+  ['handledeleteteacher_7',['handleDeleteTeacher',['../classRouter.html#a0a51b0fb740ab81800997e328d4d36d4',1,'Router']]],
+  ['handlegetclass_8',['handleGetClass',['../classRouter.html#abfa5fe2615c4dd037b45b5c74fed3795',1,'Router']]],
+  ['handlegetclasses_9',['handleGetClasses',['../classRouter.html#a0e66812602d8e69b9ee63c812b213820',1,'Router']]],
+  ['handlegetgrade_10',['handleGetGrade',['../classRouter.html#a4f4b3955ccb900f4b5ee25f81dd2421d',1,'Router']]],
+  ['handlegetgrades_11',['handleGetGrades',['../classRouter.html#a296e83c88e7bbf02efe15a5c2117a9e8',1,'Router']]],
+  ['handlegetstudent_12',['handleGetStudent',['../classRouter.html#ae1b915c4c558d21204700899a2d648e2',1,'Router']]],
+  ['handlegetstudents_13',['handleGetStudents',['../classRouter.html#a42b7b34030cd916f21f8ec0dcbac1204',1,'Router']]],
+  ['handlegetteacher_14',['handleGetTeacher',['../classRouter.html#a6307fcea3cc23e193d34ccbd88aa772c',1,'Router']]],
+  ['handlegetteachers_15',['handleGetTeachers',['../classRouter.html#a2a72604387827c05d1b20bc57d2b1e00',1,'Router']]],
+  ['handleupdateclass_16',['handleUpdateClass',['../classRouter.html#a22c450eb385e5621ab158407c6287c05',1,'Router']]],
+  ['handleupdategrade_17',['handleUpdateGrade',['../classRouter.html#a1531133efe3d05f7ea8deb7758e0925b',1,'Router']]],
+  ['handleupdatestudent_18',['handleUpdateStudent',['../classRouter.html#a86f3bd4f23fb472bc60eace21cea41e7',1,'Router']]],
+  ['handleupdateteacher_19',['handleUpdateTeacher',['../classRouter.html#a6f52760e2d9323af60c0175ebef43f6e',1,'Router']]]
 ];

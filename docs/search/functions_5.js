@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['resetcolor_0',['resetColor',['../logger_8h.html#afe00396766eb6b8ca4674de4c5d3d949',1,'logger.cpp']]]
+  ['operator_20crow_3a_3ajson_3a_3awvalue_0',['wvalue',['../structConfig.html#ae4d932561780c9f2d6482c0237c880a3',1,'Config']]]
 ];

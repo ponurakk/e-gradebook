@@ -2,5 +2,6 @@ var annotated_dup =
 [
     [ "Config", "structConfig.html", "structConfig" ],
     [ "CustomLogger", "classCustomLogger.html", "classCustomLogger" ],
-    [ "DbInit", "classDbInit.html", "classDbInit" ]
+    [ "DbInit", "classDbInit.html", "classDbInit" ],
+    [ "Router", "classRouter.html", "classRouter" ]
 ];
