@@ -1,4 +1,5 @@
 #include "config.h"
+#include "controllers/router.h"
 #include "initialize_db.h"
 #include "logger.h"
 #include <crow/app.h>
@@ -35,6 +36,8 @@ int main() {
   Config config = {"127.0.0.1", 3000, "sqlite.db"};
 
   DbInit db(config);
+
+  Router router(app);
   serveDocs(app);
 
   CROW_ROUTE(app, "/")
