@@ -87,6 +87,8 @@ DbInit::DbInit(Config config) {
   sqlite3_close(this->db);
 }
 
+sqlite3 *DbInit::getDb() { return this->db; }
+
 DbInit::~DbInit() {
   sqlite3_close(this->db);
   CROW_LOG_DEBUG << "Closed db connection";

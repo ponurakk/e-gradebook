@@ -28,6 +28,11 @@ public:
    */
   ~DbInit();
 
+  /**
+   * @brief Returns sqlite3
+   */
+  sqlite3 *getDb();
+
 private:
   /**
    * @brief Creates the Grades table in the database.
