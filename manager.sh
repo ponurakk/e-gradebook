@@ -1,10 +1,15 @@
 #!/bin/bash
 
-build() {
+cleanbuild() {
   mkdir -p build
   cd build
-  cmake ..
-  make
+  cmake -G "Ninja" ..
+  ninja
+}
+
+build() {
+  cd build
+  ninja
 }
 
 clean() {
@@ -17,6 +22,8 @@ run() {
 
 if [ "$1" == "run" ]; then
   run
+elif [ "$1" == "cleanbuild" ]; then
+  cleanbuild
 elif [ "$1" == "build" ]; then
   build
 elif [ "$1" == "clean" ]; then
