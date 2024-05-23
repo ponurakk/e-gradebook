@@ -89,6 +89,27 @@ Router::Router(crow::SimpleApp &app) : app(app) {
       .methods(crow::HTTPMethod::DELETE)([&](const crow::request &req, int id) {
         return handleDeleteTeacher(req, id);
       });
+
+  // Default route to serve index.html from /static/docs
+  CROW_ROUTE(app, "/docs/")
+  ([](crow::response &res) {
+    res.redirect("/docs/index.html");
+    res.end();
+  });
+
+  CROW_ROUTE(app, "/docs/<path>")
+      .methods(crow::HTTPMethod::GET)(
+          [](const crow::request &req, crow::response &res, std::string path) {
+            std::string full_path = "docs/" + path;
+            res.set_static_file_info(full_path);
+            res.end();
+          });
+
+  CROW_ROUTE(app, "/")
+  ([]() {
+    auto page = crow::mustache::load("index.mustache");
+    return page.render();
+  });
 }
 
 Router::~Router() {
