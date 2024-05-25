@@ -5,7 +5,10 @@
 
 crow::response Router::handleGetTeachers(const crow::request &req) {
   sqlite3_stmt *stmt;
-  const char *sql = "SELECT * FROM teachers";
+  const char *sql =
+      "SELECT teachers.id, teachers.first_name, teachers.surname, "
+      "teachers.subject, classes.name as 'teacher_of' FROM teachers JOIN "
+      "classes ON classes.id = teachers.teacher_of";
   if (sqlite3_prepare_v2(this->db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
     return crow::response(500, "Failed to prepare statement");
   }
@@ -20,13 +23,14 @@ crow::response Router::handleGetTeachers(const crow::request &req) {
         reinterpret_cast<const char *>(sqlite3_column_text(stmt, 2));
     teacher["subject"] =
         reinterpret_cast<const char *>(sqlite3_column_text(stmt, 3));
-    teacher["teacher_of"] = sqlite3_column_int(stmt, 4);
+    teacher["teacher_of"] =
+        reinterpret_cast<const char *>(sqlite3_column_text(stmt, 4));
     teachers.push_back(std::move(teacher));
   }
   sqlite3_finalize(stmt);
 
   crow::json::wvalue result;
-  result["teachers"] = std::move(teachers);
+  result = std::move(teachers);
   return crow::response(200, result);
 }
 
@@ -56,14 +60,23 @@ crow::response Router::handleCreateTeacher(const crow::request &req) {
     sqlite3_finalize(stmt);
     return crow::response(500, "Failed to execute statement");
   }
+
+  int teacher_id = sqlite3_last_insert_rowid(this->db);
   sqlite3_finalize(stmt);
 
-  return crow::response(201, "Teacher created successfully");
+  crow::json::wvalue response;
+  response["message"] = "Teacher created successfully";
+  response["teacher_id"] = teacher_id;
+
+  return crow::response(201, response);
 }
 
 crow::response Router::handleGetTeacher(const crow::request &req, int id) {
   sqlite3_stmt *stmt;
-  const char *sql = "SELECT * FROM teachers WHERE id = ?";
+  const char *sql =
+      "SELECT teachers.id, teachers.first_name, teachers.surname, "
+      "teachers.subject, classes.name as 'teacher_of' FROM teachers JOIN "
+      "classes ON classes.id = teachers.teacher_of WHERE teachers.id = ?";
   if (sqlite3_prepare_v2(this->db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
     return crow::response(500, "Failed to prepare statement");
   }
@@ -78,7 +91,8 @@ crow::response Router::handleGetTeacher(const crow::request &req, int id) {
         reinterpret_cast<const char *>(sqlite3_column_text(stmt, 2));
     teacher["subject"] =
         reinterpret_cast<const char *>(sqlite3_column_text(stmt, 3));
-    teacher["teacher_of"] = sqlite3_column_int(stmt, 4);
+    teacher["teacher_of"] =
+        reinterpret_cast<const char *>(sqlite3_column_text(stmt, 4));
     sqlite3_finalize(stmt);
     return crow::response(200, teacher);
   } else {

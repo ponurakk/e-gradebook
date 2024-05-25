@@ -20,7 +20,7 @@ crow::response Router::handleGetClasses(const crow::request &req) {
   sqlite3_finalize(stmt);
 
   crow::json::wvalue result;
-  result["classes"] = std::move(classes);
+  result = std::move(classes);
   return crow::response(200, result);
 }
 
@@ -43,9 +43,16 @@ crow::response Router::handleCreateClass(const crow::request &req) {
     sqlite3_finalize(stmt);
     return crow::response(500, "Failed to execute statement");
   }
+
+  int class_id = sqlite3_last_insert_rowid(this->db);
+
   sqlite3_finalize(stmt);
 
-  return crow::response(201, "Class created successfully");
+  crow::json::wvalue response;
+  response["message"] = "Class created successfully";
+  response["class_id"] = class_id;
+
+  return crow::response(201, response);
 }
 
 crow::response Router::handleGetClass(const crow::request &req, int id) {

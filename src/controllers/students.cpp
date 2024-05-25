@@ -5,7 +5,11 @@
 
 crow::response Router::handleGetStudents(const crow::request &req) {
   sqlite3_stmt *stmt;
-  const char *sql = "SELECT * FROM students";
+  const char *sql =
+      "SELECT students.id, students.first_name, students.surname, "
+      "students.class, classes.name "
+      "as 'class_name' FROM students JOIN classes ON students.class = "
+      "classes.id";
   if (sqlite3_prepare_v2(this->db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
     return crow::response(500, "Failed to prepare statement");
   }
@@ -19,12 +23,14 @@ crow::response Router::handleGetStudents(const crow::request &req) {
     student["surname"] =
         reinterpret_cast<const char *>(sqlite3_column_text(stmt, 2));
     student["class"] = sqlite3_column_int(stmt, 3);
+    student["class_name"] =
+        reinterpret_cast<const char *>(sqlite3_column_text(stmt, 4));
     students.push_back(std::move(student));
   }
   sqlite3_finalize(stmt);
 
   crow::json::wvalue result;
-  result["students"] = std::move(students);
+  result = std::move(students);
   return crow::response(200, result);
 }
 
@@ -52,14 +58,24 @@ crow::response Router::handleCreateStudent(const crow::request &req) {
     sqlite3_finalize(stmt);
     return crow::response(500, "Failed to execute statement");
   }
+
+  int student_id = sqlite3_last_insert_rowid(this->db);
   sqlite3_finalize(stmt);
 
-  return crow::response(201, "Student created successfully");
+  crow::json::wvalue response;
+  response["message"] = "Student created successfully";
+  response["student_id"] = student_id;
+
+  return crow::response(201, response);
 }
 
 crow::response Router::handleGetStudent(const crow::request &req, int id) {
   sqlite3_stmt *stmt;
-  const char *sql = "SELECT * FROM students WHERE id = ?";
+  const char *sql =
+      "SELECT students.id, students.first_name, students.surname, "
+      "students.class, classes.name "
+      "as 'class_name' FROM students JOIN classes ON students.class = "
+      "classes.id WHERE students.id = ?";
   if (sqlite3_prepare_v2(this->db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
     return crow::response(500, "Failed to prepare statement");
   }
@@ -73,6 +89,8 @@ crow::response Router::handleGetStudent(const crow::request &req, int id) {
     student["surname"] =
         reinterpret_cast<const char *>(sqlite3_column_text(stmt, 2));
     student["class"] = sqlite3_column_int(stmt, 3);
+    student["class_name"] =
+        reinterpret_cast<const char *>(sqlite3_column_text(stmt, 4));
     sqlite3_finalize(stmt);
     return crow::response(200, student);
   } else {
