@@ -65,6 +65,7 @@ void DbInit::createTeachersTable() {
 void DbInit::createGradesTable() {
   const char *createTable =
       "CREATE TABLE IF NOT EXISTS \"grades\" ("
+      "\"id\" INTEGER PRIMARY KEY AUTOINCREMENT,"
       "\"student_id\" INTEGER,"
       "\"teacher_id\" INTEGER,"
       "\"score\" INTEGER NOT NULL,"
