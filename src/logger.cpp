@@ -5,8 +5,7 @@
 #include <sstream>
 #include <string>
 
-using std::cout, std::cerr, std::endl, std::string, std::put_time,
-    std::ostringstream;
+using std::cerr, std::string, std::put_time, std::ostringstream;
 
 string logLevelToString(LogLevel level) {
   switch (level) {
@@ -52,8 +51,8 @@ void setColor(int color) {
 }
 void resetColor() { setColor(7); }
 #else
-void setColor(int color) { cout << "\033[1;" << color << "m"; }
-void resetColor() { setColor(0); }
+string setColor(int color) { return "\033[1;" + std::to_string(color) + "m"; }
+string resetColor() { return setColor(0); }
 #endif
 
 string getCurrentTime(string format) {
@@ -72,9 +71,8 @@ string getCurrentTime(string format) {
 }
 
 void CustomLogger::log(string message, crow::LogLevel level) {
-  cerr << "(" << getCurrentTime("%H:%M:%S") << ") [";
-  setColor(logLevelToColor(level));
-  cerr << logLevelToString(level);
-  resetColor();
-  cerr << "] " << message << endl;
+  string str = "(" + getCurrentTime("%H:%M:%S") + ") [" +
+               setColor(logLevelToColor(level)) + logLevelToString(level) +
+               resetColor() + "] " + message + "\n";
+  cerr << str;
 }
