@@ -5,7 +5,7 @@ jsonpath "$[0].id" == 1
 jsonpath "$[0].first_name" == "Aurelia"
 jsonpath "$[0].surname" == "Tomaszewska"
 jsonpath "$[0].subject" == "Polski"
-jsonpath "$[0].teacher_of" == 1
+jsonpath "$[0].teacher_of" == "1ct"
 
 
 POST http://localhost:3000/api/teachers
@@ -29,7 +29,7 @@ jsonpath "$.id" == {{teacher_id}}
 jsonpath "$.first_name" == "Maja"
 jsonpath "$.surname" == "Nowak"
 jsonpath "$.subject" == "Matematyka"
-jsonpath "$.teacher_of" == 3
+jsonpath "$.teacher_of" == "3ct"
 
 
 PUT http://localhost:3000/api/teachers/{{teacher_id}}
