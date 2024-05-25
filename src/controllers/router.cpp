@@ -11,81 +11,81 @@ Router::Router(crow::SimpleApp &app) : app(app) {
   }
 
   // Define routes for students
-  CROW_ROUTE(app, "/students")
+  CROW_ROUTE(app, "/api/students")
       .methods(crow::HTTPMethod::GET)(
           [&](const crow::request &req) { return handleGetStudents(req); });
-  CROW_ROUTE(app, "/students")
+  CROW_ROUTE(app, "/api/students")
       .methods(crow::HTTPMethod::POST)(
           [&](const crow::request &req) { return handleCreateStudent(req); });
-  CROW_ROUTE(app, "/students/<int>")
+  CROW_ROUTE(app, "/api/students/<int>")
       .methods(crow::HTTPMethod::GET)([&](const crow::request &req, int id) {
         return handleGetStudent(req, id);
       });
-  CROW_ROUTE(app, "/students/<int>")
+  CROW_ROUTE(app, "/api/students/<int>")
       .methods(crow::HTTPMethod::PUT)([&](const crow::request &req, int id) {
         return handleUpdateStudent(req, id);
       });
-  CROW_ROUTE(app, "/students/<int>")
+  CROW_ROUTE(app, "/api/students/<int>")
       .methods(crow::HTTPMethod::DELETE)([&](const crow::request &req, int id) {
         return handleDeleteStudent(req, id);
       });
 
   // Define routes for classes
-  CROW_ROUTE(app, "/classes")
+  CROW_ROUTE(app, "/api/classes")
       .methods(crow::HTTPMethod::GET)(
           [&](const crow::request &req) { return handleGetClasses(req); });
-  CROW_ROUTE(app, "/classes")
+  CROW_ROUTE(app, "/api/classes")
       .methods(crow::HTTPMethod::POST)(
           [&](const crow::request &req) { return handleCreateClass(req); });
-  CROW_ROUTE(app, "/classes/<int>")
+  CROW_ROUTE(app, "/api/classes/<int>")
       .methods(crow::HTTPMethod::GET)([&](const crow::request &req, int id) {
         return handleGetClass(req, id);
       });
-  CROW_ROUTE(app, "/classes/<int>")
+  CROW_ROUTE(app, "/api/classes/<int>")
       .methods(crow::HTTPMethod::PUT)([&](const crow::request &req, int id) {
         return handleUpdateClass(req, id);
       });
-  CROW_ROUTE(app, "/classes/<int>")
+  CROW_ROUTE(app, "/api/classes/<int>")
       .methods(crow::HTTPMethod::DELETE)([&](const crow::request &req, int id) {
         return handleDeleteClass(req, id);
       });
 
   // Define routes for grades
-  CROW_ROUTE(app, "/grades")
+  CROW_ROUTE(app, "/api/grades")
       .methods(crow::HTTPMethod::GET)(
           [&](const crow::request &req) { return handleGetGrades(req); });
-  CROW_ROUTE(app, "/grades")
+  CROW_ROUTE(app, "/api/grades")
       .methods(crow::HTTPMethod::POST)(
           [&](const crow::request &req) { return handleCreateGrade(req); });
-  CROW_ROUTE(app, "/grades/<int>")
+  CROW_ROUTE(app, "/api/grades/<int>")
       .methods(crow::HTTPMethod::GET)([&](const crow::request &req, int id) {
         return handleGetGrade(req, id);
       });
-  CROW_ROUTE(app, "/grades/<int>")
+  CROW_ROUTE(app, "/api/grades/<int>")
       .methods(crow::HTTPMethod::PUT)([&](const crow::request &req, int id) {
         return handleUpdateGrade(req, id);
       });
-  CROW_ROUTE(app, "/grades/<int>")
+  CROW_ROUTE(app, "/api/grades/<int>")
       .methods(crow::HTTPMethod::DELETE)([&](const crow::request &req, int id) {
         return handleDeleteGrade(req, id);
       });
 
   // Define routes for teachers
-  CROW_ROUTE(app, "/teachers")
+  CROW_ROUTE(app, "/api/teachers")
       .methods(crow::HTTPMethod::GET)(
           [&](const crow::request &req) { return handleGetTeachers(req); });
-  CROW_ROUTE(app, "/teachers")
+  CROW_ROUTE(app, "/api/teachers")
       .methods(crow::HTTPMethod::POST)(
           [&](const crow::request &req) { return handleCreateTeacher(req); });
-  CROW_ROUTE(app, "/teachers/<int>")
+  CROW_ROUTE(app, "/api/teachers/<int>")
       .methods(crow::HTTPMethod::GET)([&](const crow::request &req, int id) {
         return handleGetTeacher(req, id);
       });
-  CROW_ROUTE(app, "/teachers/<int>")
+  CROW_ROUTE(app, "/api/teachers/<int>")
       .methods(crow::HTTPMethod::PUT)([&](const crow::request &req, int id) {
         return handleUpdateTeacher(req, id);
       });
-  CROW_ROUTE(app, "/teachers/<int>")
+  CROW_ROUTE(app, "/api/teachers/<int>")
       .methods(crow::HTTPMethod::DELETE)([&](const crow::request &req, int id) {
         return handleDeleteTeacher(req, id);
       });
