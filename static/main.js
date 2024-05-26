@@ -1,10 +1,10 @@
 const { dialog, div, h1, h2, button, form, input, p, label, nav, a, section, span } = van.tags;
 
 const API_BASE_URL = '/api';
-const STUDENTS_URL = `${API_BASE_URL}/students`;
-const GRADES_URL = `${API_BASE_URL}/grades`;
-const CLASSES_URL = `${API_BASE_URL}/classes`;
-const TEACHERS_URL = `${API_BASE_URL}/teachers`;
+const STUDENTS_URL = `./students.json`;
+const GRADES_URL = `./grades`;
+const CLASSES_URL = `./classes`;
+const TEACHERS_URL = `./teachers`;
 
 // Utility function for GET requests
 async function fetchAPI(url) {
@@ -66,17 +66,49 @@ const Navbar = () => {
   );
 };
 
-const AddForm = () => {
+const AddStudentForm = () => {
+  return div(
+    { class: "mb-4 inline-block" },
+    input({ type: "text", name: "name", placeholder: "Student First-name", class: "border p-2 mb-2 w-[300px] block" }),
+    input({ type: "text", name: "name", placeholder: "Student Surname", class: "border p-2 mb-2 w-[300px] block" }),
+    input({ type: "text", name: "name", placeholder: "Student Class", class: "border p-2 mb-2 w-[300px] block" }),
+    button({ type: "submit", class: "bg-green-500 text-white px-4 py-2" }, "Add Student")
+  );
+}
+
+const AddClassForm = () => {
+  return div(
+    { class: "mb-4 inline-block" },
+    input({ type: "text", name: "name", placeholder: "Class", class: "border p-2 mb-2 w-[300px] block" }),
+    button({ type: "submit", class: "bg-green-500 text-white px-4 py-2" }, "Add Class")
+  );
+}
+
+const AddGradeForm = () => {
   return div(
     { class: "mb-4" },
-    input({ type: "text", name: "name", placeholder: "Student Name", class: "border p-2 mb-2 w-full" }),
-    button({ type: "submit", class: "bg-green-500 text-white px-4 py-2" }, "Add Student")
+    input({ type: "text", name: "name", placeholder: "Student Id", class: "border p-2 mb-2 w-[300px] block" }),
+    input({ type: "text", name: "name", placeholder: "Teacher Id", class: "border p-2 mb-2 w-[300px] block" }),
+    input({ type: "text", name: "name", placeholder: "Grade/Score", class: "border p-2 mb-2 w-[300px] block" }),
+    input({ type: "text", name: "name", placeholder: "Year", class: "border p-2 mb-2 w-[300px] block" }),
+    button({ type: "submit", class: "bg-green-500 text-white px-4 py-2" }, "Add Grade")
+  );
+}
+
+const AddTeacherForm = () => {
+  return div(
+    { class: "mb-4" },
+    input({ type: "text", name: "name", placeholder: "Teacher First-name", class: "border p-2 mb-2 w-[400px] block" }),
+    input({ type: "text", name: "name", placeholder: "Teacher Surname", class: "border p-2 mb-2 w-[400px] block" }),
+    input({ type: "text", name: "name", placeholder: "Subject Specialization", class: "border p-2 mb-2 w-[400px] block" }),
+    input({ type: "text", name: "name", placeholder: "Teacher Of Class", class: "border p-2 mb-2 w-[400px] block" }),
+    button({ type: "submit", class: "bg-green-500 text-white px-4 py-2" }, "Add Teacher")
   );
 }
 
 const Student = ({ name }) => {
   return div(
-    { class: "flex justify-between items-center bg-white p-4 shadow" },
+    { class: "flex justify-between items-center bg-white p-4 shadow w-[350px] " },
     span(name),
     div(
       div(
@@ -105,7 +137,7 @@ const Student = ({ name }) => {
 
 const Section = ({ name, form, items }) => {
   return section(
-    { id: name.toLowerCase(), class: "mb-8" },
+    { id: name.toLowerCase(), class: "mt-6 mb-8 w-[45%] inline-block align-top" },
     h2({ class: "text-xl font-bold mb-4" }, name),
     form,
     div(
@@ -144,10 +176,10 @@ const App = () =>
     div({ id: "modal-bg", class: "hidden fixed top-0 left-0 w-full h-full backdrop-blur-sm" }),
     Navbar(),
     div(
-      Section({ name: "Students", form: AddForm(), items: StudentsList }),
-      Section({ name: "Classes", form: AddForm(), items: ClassesList }),
-      Section({ name: "Grades", form: AddForm(), items: GradesList }),
-      Section({ name: "Teachers", form: AddForm(), items: TeachersList }),
+      Section({ name: "Students", form: AddStudentForm(), items: StudentsList }),
+      Section({ name: "Classes", form: AddClassForm(), items: ClassesList }),
+      Section({ name: "Grades", form: AddGradeForm(), items: GradesList }),
+      Section({ name: "Teachers", form: AddTeacherForm(), items: TeachersList }),
     )
   );
 
