@@ -45,7 +45,6 @@ crow::response Router::handleCreateClass(const crow::request &req) {
   }
 
   int class_id = sqlite3_last_insert_rowid(this->db);
-
   sqlite3_finalize(stmt);
 
   crow::json::wvalue response;
