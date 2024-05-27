@@ -1,10 +1,10 @@
 const { dialog, div, h1, h2, button, form, input, p, label, nav, a, section, span } = van.tags;
 
 const API_BASE_URL = '/api';
-const STUDENTS_URL = `./students.json`;
-const GRADES_URL = `./grades`;
-const CLASSES_URL = `./classes`;
-const TEACHERS_URL = `./teachers`;
+const STUDENTS_URL = `${API_BASE_URL}/students`;
+const GRADES_URL = `${API_BASE_URL}/grades`;
+const CLASSES_URL = `${API_BASE_URL}/classes`;
+const TEACHERS_URL = `${API_BASE_URL}/teachers`;
 
 // Utility function for GET requests
 async function fetchAPI(url) {
@@ -108,8 +108,8 @@ const AddTeacherForm = () => {
 
 const Student = ({ name }) => {
   return div(
-    { class: "flex justify-between items-center bg-white p-4 shadow w-[350px] " },
-    span(name),
+    { class: "flex justify-between items-center bg-white p-4 shadow w-max" },
+    span({ class: "mr-10" }, name),
     div(
       div(
         { class: "inline-block" },
@@ -126,7 +126,7 @@ const Student = ({ name }) => {
       dialog(
         { id: `modal-${name}`, class: "p-4 bg-white rounded shadow-md w-1/3" },
         input({ type: "text", value: name, class: "border p-2" }),
-        button({ 
+        button({
           class: "bg-black text-white px-4 py-2",
           onclick: (e) => { closeModal(e.target.parentNode.id); }
         }, "Close")
@@ -137,13 +137,16 @@ const Student = ({ name }) => {
 
 const Section = ({ name, form, items }) => {
   return section(
-    { id: name.toLowerCase(), class: "mt-6 mb-8 w-[45%] inline-block align-top" },
+    { id: name.toLowerCase(), class: "mt-6 mb-8 w-max align-top" },
     h2({ class: "text-xl font-bold mb-4" }, name),
-    form,
     div(
-      { class: "space-y-4" },
-      items,
-    ),
+      { class: "flex gap-5" },
+      form,
+      div(
+        { class: "space-y-4" },
+        items,
+      ),
+    )
   );
 };
 
@@ -176,6 +179,7 @@ const App = () =>
     div({ id: "modal-bg", class: "hidden fixed top-0 left-0 w-full h-full backdrop-blur-sm" }),
     Navbar(),
     div(
+      { class: "flex flex-wrap gap-10 justify-between" },
       Section({ name: "Students", form: AddStudentForm(), items: StudentsList }),
       Section({ name: "Classes", form: AddClassForm(), items: ClassesList }),
       Section({ name: "Grades", form: AddGradeForm(), items: GradesList }),
