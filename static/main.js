@@ -22,6 +22,28 @@ async function postAPI(url, data) {
   return response.json();
 }
 
+// Utility function for DELETE requests
+async function deleteAPI(url, id) {
+  const response = await fetch(`${url}/${id}`, {
+    method: 'DELETE',
+  });
+  fetchStudents();
+  fetchGrades();
+  fetchClasses();
+  fetchTeachers();
+  return response.json();
+}
+
+// Utility function for PUT requests
+async function putAPI(url, id, data) {
+  const response = await fetch(`${url}/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  return response.json();
+}
+
 function openModal(id) {
   document.getElementById("modal-bg").style.display = "block";
   document.getElementById(id).showModal();
@@ -227,7 +249,14 @@ const AddTeacherForm = () => {
   );
 }
 
-const Student = ({ name }) => {
+const Student = ({ id, name }) => {
+  const handleDelete = async () => {
+    await deleteAPI(STUDENTS_URL, id);
+    await fetchStudents();
+  };
+  const student_name = van.state("");
+  const student_surname = van.state("");
+  const student_class = van.state("");
   return div(
     { class: "flex justify-between items-center bg-white p-4 shadow w-max" },
     span({ class: "mr-10" }, name),
@@ -237,24 +266,88 @@ const Student = ({ name }) => {
         button({
           type: "button",
           class: "bg-yellow-500 text-white px-4 py-2",
-          onclick: () => openModal(`modal-${name}`)
+          onclick: () => openModal(`modal-${id}`)
         }, "Edit")
       ),
       div(
         { class: "inline-block" },
-        button({ type: "button", class: "bg-red-500 text-white px-4 py-2" }, "Delete")
+        button({ type: "button", class: "bg-red-500 text-white px-4 py-2", onclick: handleDelete }, "Delete")
       ),
       dialog(
-        { id: `modal-${name}`, class: "p-4 bg-white rounded shadow-md w-1/3" },
-        input({ type: "text", value: name, class: "border p-2" }),
+        { id: `modal-${id}`, class: "p-4 bg-white rounded shadow-md w-1/3" },
+        input({
+          type: "text",
+          value: student_name.val,
+          class: "border p-2 mb-2 w-full",
+          oninput: e => student_name.val = e.target.value
+        }),
+        input({
+          type: "text",
+          value: student_surname.val,
+          class: "border p-2 mb-2 w-full",
+          oninput: e => student_surname.val = e.target.value
+        }),
+        van.derive(() => select({
+          class: "border p-2 mb-2 w-full",
+          value: student_class.val,
+          oninput: e => student_class.val = e.target.value
+        }, [option({ value: "0", selected: true, disabled: true }, "Select class"), ...classesState.val.map(v => option({ value: v.id }, v.name))])),
+        button({ 
+          type: "button", 
+          class: "bg-yellow-500 text-white px-4 py-2 ml-2",
+          onclick: async () => {
+            await putAPI(`${STUDENTS_URL}/${id}`, {
+              first_name: student_name.val,
+              surname: student_surname.val,
+              class: student_class.val,
+            });
+            await fetchStudents();
+            //closeModal(`modal-${id}`);
+          }
+        }, "Save"),
         button({
-          class: "bg-black text-white px-4 py-2",
+          class: "bg-black text-white px-4 py-2 ml-2",
           onclick: (e) => { closeModal(e.target.parentNode.id); }
         }, "Close")
       ),
     )
   );
-}
+};
+
+const Class = ({ id, name }) => {
+  const handleDelete = async () => {
+    await deleteAPI(CLASSES_URL, id);
+    await fetchClasses(); // Update classes after deletion
+  };
+
+  return div(
+    { class: "flex justify-between items-center bg-white p-4 shadow w-max" },
+    span({ class: "mr-10" }, name),
+    div(
+      div(
+        { class: "inline-block" },
+        button({
+          type: "button",
+          class: "bg-yellow-500 text-white px-4 py-2",
+          onclick: () => openModal(`modal-${id}`)
+        }, "Edit")
+      ),
+      div(
+        { class: "inline-block" },
+        button({ type: "button", class: "bg-red-500 text-white px-4 py-2", onclick: handleDelete }, "Delete")
+      ),
+      dialog(
+        { id: `modal-${id}`, class: "p-4 bg-white rounded shadow-md w-1/3" },
+        input({ type: "text", value: name, class: "border p-2" }),
+        button({ type: "button", class: "bg-yellow-500 text-white px-4 py-2 ml-2" }, "Save"),
+        button({
+          class: "bg-black text-white px-4 py-2 ml-2",
+          onclick: (e) => { closeModal(e.target.parentNode.id); }
+        }, "Close")
+      ),
+    )
+  );
+};
 
 const Section = ({ name, form, items }) => {
   return section(
@@ -272,45 +365,124 @@ const Section = ({ name, form, items }) => {
 };
 
 const StudentsList = van.derive(() => div(
-  studentsState.val.map(v => Student({
-    name: `${v.first_name} ${v.surname} ${v.class_name}`,
+  studentsState.val.map(({ id, first_name, surname, class_name }) => Student({
+    id,
+    name: `${first_name} ${surname} ${class_name}`,
   }))
 ));
 
 const ClassesList = van.derive(() => div(
-  classesState.val.map(v => Student({
-    name: `${v.name}`,
+  classesState.val.map(({ id, name }) => Class({
+    id,
+    name,
   }))
 ));
 
-const GradesList = van.derive(() => div(
-  gradesState.val.map(v => Student({
-    name: `${v.subject} ${v.score}`,
-  }))
-));
+const Grade = ({ id, subject, score }) => {
+  const handleDelete = async () => {
+    await deleteAPI(GRADES_URL, id);
+    await fetchGrades(); // Update grades after deletion
+  };
 
-const TeachersList = van.derive(() => div(
-  teachersState.val.map(v => Student({
-    name: `${v.first_name} ${v.surname} ${v.teacher_of}`,
-  }))
-));
-
-const App = () =>
-  div(
-    div({ id: "modal-bg", class: "hidden fixed top-0 left-0 w-full h-full backdrop-blur-sm" }),
-    Navbar(),
+  return div(
+    { class: "flex justify-between items-center bg-white p-4 shadow w-max" },
+    span({ class: "mr-10" }, `${subject} ${score}`),
     div(
-      { class: "flex flex-wrap gap-10 justify-between" },
-      Section({ name: "Students", form: AddStudentForm(), items: StudentsList }),
-      Section({ name: "Classes", form: AddClassForm(), items: ClassesList }),
-      Section({ name: "Grades", form: AddGradeForm(), items: GradesList }),
-      Section({ name: "Teachers", form: AddTeacherForm(), items: TeachersList }),
+      div(
+        { class: "inline-block" },
+        button({
+          type: "button",
+          class: "bg-yellow-500 text-white px-4 py-2",
+          onclick: () => openModal(`modal-${id}`)
+        }, "Edit")
+      ),
+      div(
+        { class: "inline-block" },
+        button({ type: "button", class: "bg-red-500 text-white px-4 py-2", onclick: handleDelete }, "Delete")
+      ),
+      dialog(
+        { id: `modal-${id}`, class: "p-4 bg-white rounded shadow-md w-1/3" },
+        
+        input({ type: "text", value: `${subject} ${score}`, class: "border p-2" }),
+        button({ type: "button", class: "bg-yellow-500 text-white px-4 py-2 ml-2" }, "Save"),
+        button({
+          class: "bg-black text-white px-4 py-2 ml-2",
+          onclick: (e) => { closeModal(e.target.parentNode.id); }
+        }, "Close")
+      ),
     )
   );
+};
 
-van.add(document.getElementById("app"), App());
-// openModal("modal");
-fetchStudents();
-fetchGrades();
-fetchClasses();
-fetchTeachers();
+const GradesList = van.derive(() => div(
+  gradesState.val.map(({ id, subject, score }) => Grade({
+    id,
+    subject,
+    score,
+  }))
+));
+
+const Teacher = ({ id, first_name, surname, teacher_of }) => {
+  const handleDelete = async () => {
+    await deleteAPI(TEACHERS_URL, id);
+    await fetchTeachers(); 
+};
+
+    return div(
+      { class: "flex justify-between items-center bg-white p-4 shadow w-max" },
+      span({ class: "mr-10" }, `${first_name} ${surname} ${teacher_of}`),
+      div(
+        div(
+          { class: "inline-block" },
+          button({
+            type: "button",
+            class: "bg-yellow-500 text-white px-4 py-2",
+            onclick: () => openModal(`modal-${id}`)
+          }, "Edit")
+        ),
+        div(
+          { class: "inline-block" },
+          button({ type: "button", class: "bg-red-500 text-white px-4 py-2", onclick: handleDelete }, "Delete")
+        ),
+        dialog(
+          { id: `modal-${id}`, class: "p-4 bg-white rounded shadow-md w-1/3" },
+          input({ type: "text", value: `${first_name} ${surname} ${teacher_of}`, class: "border p-2" }),
+          button({ type: "button", class: "bg-yellow-500 text-white px-4 py-2 ml-2" }, "Save"),
+          button({
+            class: "bg-black text-white px-4 py-2 ml-2",
+            onclick: (e) => { closeModal(e.target.parentNode.id); }
+          }, "Close")
+        ),
+      )
+    );
+  };
+  
+  const TeachersList = van.derive(() => div(
+    teachersState.val.map(({ id, first_name, surname, teacher_of }) => Teacher({
+      id,
+      first_name,
+      surname,
+      teacher_of,
+    }))
+  ));
+  
+  const App = () =>
+    div(
+      div({ id: "modal-bg", class: "hidden fixed top-0 left-0 w-full h-full backdrop-blur-sm" }),
+      Navbar(),
+      div(
+        { class: "flex flex-wrap gap-10 justify-between" },
+        Section({ name: "Students", form: AddStudentForm(), items: StudentsList }),
+        Section({ name: "Classes", form: AddClassForm(), items: ClassesList }),
+        Section({ name: "Grades", form: AddGradeForm(), items: GradesList }),
+        Section({ name: "Teachers", form: AddTeacherForm(), items: TeachersList }),
+      )
+    );
+  
+  van.add(document.getElementById("app"), App());
+  fetchStudents();
+  fetchGrades();
+  fetchClasses();
+  fetchTeachers();
+  
+
