@@ -12,12 +12,9 @@ using crow::json::wvalue;
 using crow::websocket::connection;
 using std::nullopt;
 
-std::string_view getLastElement(const std::string_view &str, char delim) {
-  size_t pos = str.find_last_of(delim);
-  if (pos != std::string_view::npos) {
-    return str.substr(pos + 1);
-  }
-  return str;
+std::string getLastElement(const std::string &url, char delimiter) {
+  size_t pos = url.find_last_of(delimiter);
+  return (pos != std::string::npos) ? url.substr(pos + 1) : "";
 }
 
 std::optional<rvalue> validateJSON(std::string data) {
@@ -32,8 +29,18 @@ std::optional<rvalue> validateJSON(std::string data) {
 void Router::handleWebsocketRoute(connection &conn, std::string method,
                                   std::string url, rvalue data) {
   if (method == "GET") {
-    std::string id_str = std::string(getLastElement(url, '/'));
-    int id = std::stoi(id_str);
+    std::string id_str = getLastElement(url, '/');
+    int id = -1;
+    bool valid_id = true;
+
+    try {
+      if (!id_str.empty()) {
+        id = std::stoi(id_str);
+      }
+    } catch (...) {
+      valid_id = false;
+    }
+
     if (url == "/api/students") {
       crow::response res = this->handleGetStudents();
       conn.send_text(res.body);
@@ -46,18 +53,23 @@ void Router::handleWebsocketRoute(connection &conn, std::string method,
     } else if (url == "/api/grades") {
       crow::response res = this->handleGetGrades();
       conn.send_text(res.body);
-    } else if (url == "/api/students/" + id_str) {
+    } else if (url.find("/api/students/") == 0 && valid_id) {
       crow::response res = this->handleGetStudent(id);
       conn.send_text(res.body);
-    } else if (url == "/api/classes/" + id_str) {
+    } else if (url.find("/api/classes/") == 0 && valid_id) {
       crow::response res = this->handleGetClass(id);
       conn.send_text(res.body);
-    } else if (url == "/api/teachers/" + id_str) {
+    } else if (url.find("/api/teachers/") == 0 && valid_id) {
       crow::response res = this->handleGetTeacher(id);
       conn.send_text(res.body);
-    } else if (url == "/api/grades/" + id_str) {
+    } else if (url.find("/api/grades/") == 0 && valid_id) {
       crow::response res = this->handleGetGrade(id);
       conn.send_text(res.body);
+    } else {
+      wvalue res;
+      res["code"] = 400;
+      res["message"] = "Invalid request";
+      conn.send_text(res.dump());
     }
   } else if (method == "POST") {
     if (url == "/api/students") {
@@ -72,38 +84,53 @@ void Router::handleWebsocketRoute(connection &conn, std::string method,
     } else if (url == "/api/grades") {
       crow::response res = this->handleCreateGrade(data);
       conn.send_text(res.body);
+    } else {
+      wvalue res;
+      res["code"] = 400;
+      res["message"] = "Invalid request";
+      conn.send_text(res.dump());
     }
   } else if (method == "PUT") {
     std::string id_str = std::string(getLastElement(url, '/'));
     int id = std::stoi(id_str);
-    if (url == "/api/students" + id_str) {
+    if (url.find("/api/students/") == 0) {
       crow::response res = this->handleCreateStudent(data);
       conn.send_text(res.body);
-    } else if (url == "/api/classes" + id_str) {
+    } else if (url.find("/api/classes/") == 0) {
       crow::response res = this->handleUpdateClass(data, id);
       conn.send_text(res.body);
-    } else if (url == "/api/teachers" + id_str) {
+    } else if (url.find("/api/teachers/") == 0) {
       crow::response res = this->handleUpdateTeacher(data, id);
       conn.send_text(res.body);
-    } else if (url == "/api/grades" + id_str) {
+    } else if (url.find("/api/grades/") == 0) {
       crow::response res = this->handleUpdateGrade(data, id);
       conn.send_text(res.body);
+    } else {
+      wvalue res;
+      res["code"] = 400;
+      res["message"] = "Invalid request";
+      conn.send_text(res.dump());
     }
   } else if (method == "DELETE") {
     std::string id_str = std::string(getLastElement(url, '/'));
     int id = std::stoi(id_str);
-    if (url == "/api/students" + id_str) {
+    if (url.find("/api/students/") == 0) {
       crow::response res = this->handleDeleteStudent(id);
       conn.send_text(res.body);
-    } else if (url == "/api/classes" + id_str) {
+    } else if (url.find("/api/classes/") == 0) {
       crow::response res = this->handleDeleteClass(id);
       conn.send_text(res.body);
-    } else if (url == "/api/teachers" + id_str) {
+    } else if (url.find("/api/teachers/") == 0) {
       crow::response res = this->handleDeleteTeacher(id);
       conn.send_text(res.body);
-    } else if (url == "/api/grades" + id_str) {
+    } else if (url.find("/api/grades/") == 0) {
       crow::response res = this->handleDeleteGrade(id);
       conn.send_text(res.body);
+    } else {
+      wvalue res;
+      res["code"] = 400;
+      res["message"] = "Invalid request";
+      conn.send_text(res.dump());
     }
   }
 }
