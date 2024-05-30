@@ -1,9 +1,10 @@
 #include "router.h"
 #include <crow/app.h>
 #include <crow/http_response.h>
+#include <crow/json.h>
 #include <crow/logging.h>
 
-crow::response Router::handleGetStudents(const crow::request &req) {
+crow::response Router::handleGetStudents() {
   sqlite3_stmt *stmt;
   const char *sql =
       "SELECT students.id, students.first_name, students.surname, "
@@ -34,12 +35,7 @@ crow::response Router::handleGetStudents(const crow::request &req) {
   return crow::response(200, result);
 }
 
-crow::response Router::handleCreateStudent(const crow::request &req) {
-  auto x = crow::json::load(req.body);
-  if (!x) {
-    return crow::response(400, "Invalid JSON");
-  }
-
+crow::response Router::handleCreateStudent(const crow::json::rvalue &x) {
   std::string first_name = x["first_name"].s();
   std::string surname = x["surname"].s();
   int class_id = x["class"].i();
@@ -69,7 +65,7 @@ crow::response Router::handleCreateStudent(const crow::request &req) {
   return crow::response(201, response);
 }
 
-crow::response Router::handleGetStudent(const crow::request &req, int id) {
+crow::response Router::handleGetStudent(int id) {
   sqlite3_stmt *stmt;
   const char *sql =
       "SELECT students.id, students.first_name, students.surname, "
@@ -99,15 +95,11 @@ crow::response Router::handleGetStudent(const crow::request &req, int id) {
   }
 }
 
-crow::response Router::handleUpdateStudent(const crow::request &req, int id) {
-  auto x = crow::json::load(req.body);
-  if (!x) {
-    return crow::response(400, "Invalid JSON");
-  }
-
-  std::string first_name = x["first_name"].s();
-  std::string surname = x["surname"].s();
-  int class_id = x["class"].i();
+crow::response Router::handleUpdateStudent(const crow::json::rvalue &data,
+                                           int id) {
+  std::string first_name = data["first_name"].s();
+  std::string surname = data["surname"].s();
+  int class_id = data["class"].i();
 
   const char *sql = "UPDATE students SET first_name = ?, surname = ?, class "
                     "= ? WHERE id = ?";
@@ -129,7 +121,7 @@ crow::response Router::handleUpdateStudent(const crow::request &req, int id) {
   return crow::response(200, "Student updated successfully");
 }
 
-crow::response Router::handleDeleteStudent(const crow::request &req, int id) {
+crow::response Router::handleDeleteStudent(int id) {
   const char *sql = "DELETE FROM students WHERE id = ?";
   sqlite3_stmt *stmt;
   if (sqlite3_prepare_v2(this->db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
