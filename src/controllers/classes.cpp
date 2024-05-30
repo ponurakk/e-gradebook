@@ -1,9 +1,10 @@
 #include "router.h"
 #include <crow/app.h>
 #include <crow/http_response.h>
+#include <crow/json.h>
 #include <crow/logging.h>
 
-crow::response Router::handleGetClasses(const crow::request &req) {
+crow::response Router::handleGetClasses() {
   sqlite3_stmt *stmt;
   const char *sql = "SELECT * FROM classes";
   if (sqlite3_prepare_v2(this->db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
@@ -24,13 +25,9 @@ crow::response Router::handleGetClasses(const crow::request &req) {
   return crow::response(200, result);
 }
 
-crow::response Router::handleCreateClass(const crow::request &req) {
-  auto x = crow::json::load(req.body);
-  if (!x) {
-    return crow::response(400, "Invalid JSON");
-  }
-
-  std::string name = x["name"].s();
+crow::response Router::handleCreateClass(const crow::json::rvalue &data) {
+  CROW_LOG_INFO << data;
+  std::string name = data["name"].s();
 
   const char *sql = "INSERT INTO classes(name) VALUES (?)";
   sqlite3_stmt *stmt;
@@ -54,7 +51,7 @@ crow::response Router::handleCreateClass(const crow::request &req) {
   return crow::response(201, response);
 }
 
-crow::response Router::handleGetClass(const crow::request &req, int id) {
+crow::response Router::handleGetClass(int id) {
   sqlite3_stmt *stmt;
   const char *sql = "SELECT * FROM classes WHERE id = ?";
   if (sqlite3_prepare_v2(this->db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
@@ -74,13 +71,9 @@ crow::response Router::handleGetClass(const crow::request &req, int id) {
   }
 }
 
-crow::response Router::handleUpdateClass(const crow::request &req, int id) {
-  auto x = crow::json::load(req.body);
-  if (!x) {
-    return crow::response(400, "Invalid JSON");
-  }
-
-  std::string name = x["name"].s();
+crow::response Router::handleUpdateClass(const crow::json::rvalue &data,
+                                         int id) {
+  std::string name = data["name"].s();
 
   const char *sql = "UPDATE classes SET name = ? WHERE id = ?";
   sqlite3_stmt *stmt;
@@ -99,7 +92,7 @@ crow::response Router::handleUpdateClass(const crow::request &req, int id) {
   return crow::response(200, "Class updated successfully");
 }
 
-crow::response Router::handleDeleteClass(const crow::request &req, int id) {
+crow::response Router::handleDeleteClass(int id) {
   const char *sql = "DELETE FROM classes WHERE id = ?";
   sqlite3_stmt *stmt;
   if (sqlite3_prepare_v2(this->db, sql, -1, &stmt, nullptr) != SQLITE_OK) {

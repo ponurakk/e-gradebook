@@ -1,9 +1,10 @@
 #include "router.h"
 #include <crow/app.h>
 #include <crow/http_response.h>
+#include <crow/json.h>
 #include <crow/logging.h>
 
-crow::response Router::handleGetTeachers(const crow::request &req) {
+crow::response Router::handleGetTeachers() {
   sqlite3_stmt *stmt;
   const char *sql =
       "SELECT teachers.id, teachers.first_name, teachers.surname, "
@@ -34,16 +35,11 @@ crow::response Router::handleGetTeachers(const crow::request &req) {
   return crow::response(200, result);
 }
 
-crow::response Router::handleCreateTeacher(const crow::request &req) {
-  auto x = crow::json::load(req.body);
-  if (!x) {
-    return crow::response(400, "Invalid JSON");
-  }
-
-  std::string first_name = x["first_name"].s();
-  std::string surname = x["surname"].s();
-  std::string subject = x["subject"].s();
-  int teacher_of = x["teacher_of"].i();
+crow::response Router::handleCreateTeacher(const crow::json::rvalue &data) {
+  std::string first_name = data["first_name"].s();
+  std::string surname = data["surname"].s();
+  std::string subject = data["subject"].s();
+  int teacher_of = data["teacher_of"].i();
 
   const char *sql = "INSERT INTO teachers (first_name, surname, subject, "
                     "teacher_of) VALUES (?, ?, ?, ?)";
@@ -71,7 +67,7 @@ crow::response Router::handleCreateTeacher(const crow::request &req) {
   return crow::response(201, response);
 }
 
-crow::response Router::handleGetTeacher(const crow::request &req, int id) {
+crow::response Router::handleGetTeacher(int id) {
   sqlite3_stmt *stmt;
   const char *sql =
       "SELECT teachers.id, teachers.first_name, teachers.surname, "
@@ -101,16 +97,12 @@ crow::response Router::handleGetTeacher(const crow::request &req, int id) {
   }
 }
 
-crow::response Router::handleUpdateTeacher(const crow::request &req, int id) {
-  auto x = crow::json::load(req.body);
-  if (!x) {
-    return crow::response(400, "Invalid JSON");
-  }
-
-  std::string first_name = x["first_name"].s();
-  std::string surname = x["surname"].s();
-  std::string subject = x["subject"].s();
-  int teacher_of = x["teacher_of"].i();
+crow::response Router::handleUpdateTeacher(const crow::json::rvalue &data,
+                                           int id) {
+  std::string first_name = data["first_name"].s();
+  std::string surname = data["surname"].s();
+  std::string subject = data["subject"].s();
+  int teacher_of = data["teacher_of"].i();
 
   const char *sql = "UPDATE teachers SET first_name = ?, surname = ?, "
                     "subject = ?, teacher_of = ? WHERE id = ?";
@@ -133,7 +125,7 @@ crow::response Router::handleUpdateTeacher(const crow::request &req, int id) {
   return crow::response(200, "Teacher updated successfully");
 }
 
-crow::response Router::handleDeleteTeacher(const crow::request &req, int id) {
+crow::response Router::handleDeleteTeacher(int id) {
   const char *sql = "DELETE FROM teachers WHERE id = ?";
   sqlite3_stmt *stmt;
   if (sqlite3_prepare_v2(this->db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
